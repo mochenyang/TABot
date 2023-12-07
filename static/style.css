@@ -112,8 +112,8 @@ body {
   border-right-color: #ffe6cb;
 }
 .messages .message.left .text {
-  color: #c48843;
-  white-space: pre-wrap;
+  color: #000000;
+  /*white-space: pre-wrap;*/
 }
 .messages .message.left .avatar {
   float: left;
@@ -135,7 +135,7 @@ body {
   border-left-color: #c7eafc;
 }
 .messages .message.right .text {
-  color: #45829b;
+  color: #000000;
 }
 .messages .message.appeared {
   opacity: 1;
@@ -173,7 +173,7 @@ body {
 }
 .messages .message .text_wrapper .text {
   font-size: 18px;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .bottom_wrapper {
