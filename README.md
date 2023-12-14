@@ -3,7 +3,7 @@
 This repo contains the code to leverage [customed GPTs](https://platform.openai.com/docs/assistants/overview) to support student learning by answering their questions based on your course content. It implements a basic Flask frontend and uses MongoDB to store queries and responses. To use it, follow the steps below:
 
 1. Environment Setup (recommend using a virtual env):
-```{python}
+```python
 # edit the environment.yml file to specify your own env name
 conda env create -f environment.yml
 conda activate YOUR-ENV-NAME
