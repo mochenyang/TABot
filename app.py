@@ -1,15 +1,15 @@
 import time
 from openai import OpenAI
 from flask import Flask, render_template, request
-import pymongo
+#import pymongo
 
 app = Flask(__name__)
 
 # connect to mongodb
-dbclient = pymongo.MongoClient("mongodb://localhost:27017/")
-mydb = dbclient["TABot"]
-mycol = mydb["test"]
-user = "mochen"
+#dbclient = pymongo.MongoClient("mongodb://localhost:27017/")
+#mydb = dbclient["TABot"]
+#mycol = mydb["test"]
+#user = "mochen"
 
 # connect to openai
 client = OpenAI()
@@ -56,8 +56,8 @@ def get_response():
     userText = request.args.get('msg')
     response = ask_assistant(userText)
     # record in database
-    record = { "user": user, "thread": thread.id, "time": time.time(), "query": userText, "response": response }
-    _ = mycol.insert_one(record)
+    #record = { "user": user, "thread": thread.id, "time": time.time(), "query": userText, "response": response }
+    #_ = mycol.insert_one(record)
     return response
 
 if __name__ == "__main__":
