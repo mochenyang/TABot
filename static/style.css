@@ -33,17 +33,16 @@
 }
 
 body {
-  background-color: #edeff2;
-  font-family: "Calibri", "Roboto", sans-serif;
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* Top, content, bottom */
+  height: 100vh;
+  margin: 0;
 }
+
 .chat-window {
-  position: absolute;
-  top: 50px; /* Height of header */
-  bottom: 50px; /* Height of footer */
-  left: 0;
-  width: 100vw; /* Full width */
-  height: calc(100vh - 100px); /* Full height minus header and footer */
-  overflow: auto; /* Add scroll if content overflows */
+  grid-row: 2; /* Position in the content section */
+  width: 100vw;
+  overflow: auto;
 }
 /*
 .chat_window {
@@ -62,6 +61,7 @@ body {
 }
 */
 .top_menu {
+  grid-row: 1;
   background-color: #fff;
   width: 100%;
   padding: 20px 0 15px;
@@ -99,7 +99,7 @@ body {
   list-style: none;
   padding: 20px 10px 0 10px;
   margin: 0;
-  height: 600px;
+  height: 100%;
   overflow: auto;
 }
 .messages .message {
@@ -147,8 +147,19 @@ body {
 .messages .message.right .text {
   color: #000000;
 }
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 .messages .message.appeared {
-  opacity: 1;
+  animation: popIn 0.5s forwards;
 }
 .messages .message .avatar {
   width: 60px;
@@ -187,11 +198,10 @@ body {
 }
 
 .bottom_wrapper {
-  position: relative;
+  grid-row: 3;
   width: 100%;
   background-color: #fff;
   padding: 20px 20px;
-  /*position: absolute;*/
   bottom: 0;
 }
 .bottom_wrapper .message_input_wrapper {

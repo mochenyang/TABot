@@ -11,11 +11,12 @@
 </head>
 
 <body>
-<div class="chat_window">
     <div class="top_menu">
         <div class="title">MSBA 6131 AI Teaching Assistant</div>
     </div>
-    <ul class="messages"></ul>
+    <div class="chat_window">
+        <ul class="messages"></ul>
+    </div>
     <div class="bottom_wrapper clearfix">
         <div class="message_input_wrapper">
             <input class="message_input" placeholder="Enter your message here..." />
@@ -26,111 +27,88 @@
         </div>
     </div>
     <div class="message_template">
-    <li class="message">
-        <div class="avatar"></div>
-        <div class="text_wrapper">
-            <div class="text"></div>
-        </div>
-    </li>
-</div>
-</div>
+        <li class="message">
+            <div class="avatar"></div>
+            <div class="text_wrapper">
+                <div class="text"></div>
+            </div>
+        </li>
+    </div>
+
 
 <script>
-    (function () {
-        var Message;
-        Message = function (arg) {
-            this.text = arg.text, this.message_side = arg.message_side;
-            this.draw = function (_this) {
-                return function () {
-                    var $message;
-                    $message = $($('.message_template').clone().html());
-                    //$message.addClass(_this.message_side).find('.text').html(_this.text);
-                    $message.addClass(_this.message_side);
-                    // Check if the message is from the chatbot and convert Markdown to HTML
-                    var messageContent = _this.message_side === 'left' ? marked.parse(_this.text) : _this.text;
-                    $message.find('.text').html(messageContent);
+    class Message {
+        constructor(arg) {
+            this.text = arg.text;
+            this.message_side = arg.message_side;
+        }
 
-                    $('.messages').append($message);
-                    return setTimeout(function () {
-                        return $message.addClass('appeared');
-                    }, 0);
-                };
-            }(this);
-            return this;
-        };
-        $(function () {
-            var getMessageText, message_side, sendMessage;
-            message_side = 'right';
-            getMessageText = function () {
-                var $message_input;
-                $message_input = $('.message_input');
-                return $message_input.val();
-            };
+        draw() {
+            let $message = $($('.message_template').clone().html());
+            $message.addClass(this.message_side);
+            let messageContent = this.message_side === 'left' ? marked.parse(this.text) : this.text;
+            $message.find('.text').html(messageContent);
+            $('.messages').append($message);
+            setTimeout(() => $message.addClass('appeared'), 0);
+            this.scrollToBottom();
+        }
 
-            sendMessage = function (text) {
-                var $messages, message;
-                if (text.trim() === '') {
-                    return;
-                }
-                $('.message_input').val('');
-                $messages = $('.messages');
+        scrollToBottom() {
+            let $messages = $('.messages');
+            $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
+        }
+    }
 
-                // Set message_side based on whether the message is from the user or chatbot
-                var message_side = 'right';
+    $(function () {
+        let message_side = 'right';
 
-                message = new Message({
-                    text: text,
-                    message_side: message_side
-                });
+        function getMessageText() {
+            return $('.message_input').val();
+        }
 
-                // Draw user message
-                message.draw();
+        function sendMessage(text) {
+            if (text.trim() === '') {
+                return;
+            }
+            $('.message_input').val('');
+            let $messages = $('.messages');
 
-                // Create and draw the "waiting" message
-                var waitingMessage = new Message({
-                    text: 'Working on it...',
-                    message_side: 'left'
-                });
-                // wait 1 second before drawing the "waiting" message
-                setTimeout(function () {
-                    waitingMessage.draw();
-                }, 1000);
-
-                // Call getResponse() to get the chatbot's response
-                $.get("/get", { msg: text }).done(function (data) {
-                    // Remove the "waiting" message
-                    $('.messages').find('.message.left').last().remove();
-
-                    var botMessage = new Message({
-                        text: data,
-                        message_side: 'left'
-                    });
-
-                    // Draw bot message
-                    botMessage.draw();
-                    $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
-                });
-
-                return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
-            };
-
-            $('.send_message').click(function (e) {
-                return sendMessage(getMessageText());
+            let usermessage = new Message({
+                text: text,
+                message_side: 'right'
             });
-            $('.message_input').keyup(function (e) {
-                if (e.which === 13) {
-                    return sendMessage(getMessageText());
-                }
-            });
-            // Add "Writing..." message
-            writingMessage = new Message({
-                text: 'Hi! How can I help you today?',
+            usermessage.draw();
+
+            let waitingMessage = new Message({
+                text: 'Working on it...',
                 message_side: 'left'
             });
-            writingMessage.draw();
+            setTimeout(() => waitingMessage.draw(), 1000);
 
+            $.get("/get", { msg: text }).done(function (data) {
+                $('.messages').find('.message.left').last().remove();
+
+                let botMessage = new Message({
+                    text: data,
+                    message_side: 'left'
+                });
+                botMessage.draw();
+            });
+        }
+
+        $('.send_message').click(() => sendMessage(getMessageText()));
+        $('.message_input').keyup((e) => {
+            if (e.which === 13) {
+                sendMessage(getMessageText());
+            }
         });
-    }.call(this));
+
+        let writingMessage = new Message({
+            text: 'Hi! How can I help you today?',
+            message_side: 'left'
+        });
+        writingMessage.draw();
+    });
 </script>
 
 </body>
