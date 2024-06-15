@@ -36,6 +36,16 @@ body {
   background-color: #edeff2;
   font-family: "Calibri", "Roboto", sans-serif;
 }
+.chat-window {
+  position: absolute;
+  top: 50px; /* Height of header */
+  bottom: 50px; /* Height of footer */
+  left: 0;
+  width: 100vw; /* Full width */
+  height: calc(100vh - 100px); /* Full height minus header and footer */
+  overflow: auto; /* Add scroll if content overflows */
+}
+/*
 .chat_window {
   position: absolute;
   width: calc(100% - 20px);
@@ -50,7 +60,7 @@ body {
   background-color: #fff;
   overflow: hidden;
 }
-
+*/
 .top_menu {
   background-color: #fff;
   width: 100%;
@@ -90,7 +100,7 @@ body {
   padding: 20px 10px 0 10px;
   margin: 0;
   height: 600px;
-  overflow: scroll;
+  overflow: auto;
 }
 .messages .message {
   clear: both;
@@ -181,7 +191,7 @@ body {
   width: 100%;
   background-color: #fff;
   padding: 20px 20px;
-  position: absolute;
+  /*position: absolute;*/
   bottom: 0;
 }
 .bottom_wrapper .message_input_wrapper {

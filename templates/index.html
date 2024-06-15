@@ -13,7 +13,7 @@
 <body>
 <div class="chat_window">
     <div class="top_menu">
-        <div class="title">MSBA 6131 TA Bot</div>
+        <div class="title">MSBA 6131 AI Teaching Assistant</div>
     </div>
     <ul class="messages"></ul>
     <div class="bottom_wrapper clearfix">
@@ -86,8 +86,21 @@
                 // Draw user message
                 message.draw();
 
+                // Create and draw the "waiting" message
+                var waitingMessage = new Message({
+                    text: 'Working on it...',
+                    message_side: 'left'
+                });
+                // wait 1 second before drawing the "waiting" message
+                setTimeout(function () {
+                    waitingMessage.draw();
+                }, 1000);
+
                 // Call getResponse() to get the chatbot's response
                 $.get("/get", { msg: text }).done(function (data) {
+                    // Remove the "waiting" message
+                    $('.messages').find('.message.left').last().remove();
+
                     var botMessage = new Message({
                         text: data,
                         message_side: 'left'

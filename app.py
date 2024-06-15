@@ -12,7 +12,10 @@ app = Flask(__name__)
 #user = "mochen"
 
 # connect to openai
-client = OpenAI()
+client = OpenAI(
+    organization="org-OLj35i3NXxpSuuOGH1a1HxNm",
+    project="proj_GB1WRZh96Njv1a7nASGFgcZT")
+
 thread = client.beta.threads.create()
 
 def ask_assistant(user_input):
@@ -29,7 +32,7 @@ def ask_assistant(user_input):
     # run assistant
     run = client.beta.threads.runs.create(
         thread_id = thread.id,
-        assistant_id = "asst_JfJJaCH0eWhN9bWK3CYq40ML"
+        assistant_id = "asst_81TxmQ0vUYW0zxBLYaBoXSf8"
     )
 
     # check run status
