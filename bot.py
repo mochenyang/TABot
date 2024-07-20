@@ -30,7 +30,8 @@ def ask_assistant(user_input):
     # run assistant
     run = client.beta.threads.runs.create(
         thread_id = session['thread_id'],
-        assistant_id = session['assistant_id']
+        assistant_id = session['assistant_id'],
+        truncation_strategy = { "type": "last_messages", "last_messages": 20 }
     )
 
     # check run status

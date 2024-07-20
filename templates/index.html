@@ -111,5 +111,11 @@
     });
 </script>
 
+<script>
+    window.addEventListener("beforeunload", function (e) {
+        navigator.sendBeacon("/tab_close", "User closed the tab");
+    });
+</script>
+
 </body>
 </html>
