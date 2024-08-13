@@ -1,13 +1,19 @@
 import time
-from flask import session
 import pymongo
 
 # connect to mongodb
 dbclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = dbclient["TABot"]
 conversation_col = mydb["conversation"]
+user_col = mydb["user"]
 thread_col = mydb["thread"]
 
+# check if a user should have access
+def check_user(username):
+    if user_col.find_one({"x500": username}):
+        return True
+    else:  
+        return False 
 
 # store a conversation
 def insert_conversation(user, thread, query, response):

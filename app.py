@@ -1,20 +1,29 @@
 import time
-from flask import Flask, render_template, request
+import os
+from flask import Flask, render_template, request, redirect, url_for
 from bot import *
 from db import *
 
 app = Flask(__name__)
-app.secret_key = 'super secret key'
+app.secret_key = os.environ.get("FLASK_KEY")
 
 @app.route("/")
-def home():
-    # initialize a thread and store it in db
-    thread_init()
-    insert_thread(session['thread_id'], "open")
-    # store user ID in session (update later based on sso)
-    session['user_id'] = "yang3653"
-    
-    return render_template("index.html")
+def login_page():
+    error = request.args.get('error')
+    return render_template("login.html", error = error)
+
+# handle login
+@app.route("/login", methods = ["POST"])
+def login():
+    session['user_id'] = request.form['username']
+    print(session['user_id'])
+    if check_user(session['user_id']):
+        # initialize a thread and store it in db
+        thread_init()
+        insert_thread(session['thread_id'], "open")
+        return render_template("index.html")
+    else:
+        return redirect(url_for('login_page', error="Invalid x500. Please try again."))
 
 @app.route("/get")
 def get_response():
