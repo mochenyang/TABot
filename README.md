@@ -13,11 +13,6 @@ conda activate YOUR-ENV-NAME
 
 3. Install MongoDB for storing queries and messages:
     -  Install [MongoDB Community Server](https://www.mongodb.com/try/download/community) and craete the database / collection;
-    - Modify ```app.py``` with the info of your database / collection.
+    - Modify ```db.py``` with the info of your database / collection.
 
-4. Replace ```assistant_id``` in ```app.py``` with your own. Run the script to serve the app.
-
-
-[TO-DO]:
-- Implement user authentication
-- Flask deployment
+4. Replace ```assistant_id``` in ```bot.py``` with your own. Run the script to serve the app.
